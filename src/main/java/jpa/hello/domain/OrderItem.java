@@ -1,16 +1,18 @@
 package jpa.hello.domain;
 
 import jpa.hello.domain.Item.Item;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "order_item")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id")
@@ -23,8 +25,9 @@ public class OrderItem {
     private Order order;
     private int orderPrice;
     private int count;
+
     @Builder
-    public OrderItem(Long id, Item item, Order order, int orderPrice, int count) {
+    protected OrderItem(Long id, Item item, Order order, int orderPrice, int count) {
         this.id = id;
         this.item = item;
         this.order = order;

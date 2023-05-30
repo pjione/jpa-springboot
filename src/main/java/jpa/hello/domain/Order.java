@@ -1,5 +1,6 @@
 package jpa.hello.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -23,7 +24,7 @@ public class Order {
     private Member member;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
     private LocalDateTime orderDate;
@@ -49,7 +50,7 @@ public class Order {
         delivery.setOrder(this);
     }
     @Builder
-    public Order(Long id, Member member, List<OrderItem> orderItems, Delivery delivery, LocalDateTime orderDate, OrderStatus status) {
+    protected Order(Long id, Member member, List<OrderItem> orderItems, Delivery delivery, LocalDateTime orderDate, OrderStatus status) {
         this.id = id;
         this.member = member;
         this.orderItems = orderItems;
@@ -60,14 +61,15 @@ public class Order {
     //생성메서드
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems){
         Order order = Order.builder()
-                .member(member)
-                .delivery(delivery)
                 .status(OrderStatus.ORDER)
                 .orderDate(LocalDateTime.now())
                 .build();
+
         /*for (OrderItem orderItem : orderItems) {
             order.addOrderItems(orderItem);
         }*/
+        order.addMember(member);
+        order.addDelivery(delivery);
         Arrays.stream(orderItems).forEach(order::addOrderItems);
         return order;
     }
