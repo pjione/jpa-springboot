@@ -1,9 +1,6 @@
 package jpa.hello.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +12,7 @@ import java.util.List;
 @Table(name = "orders")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Order {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -31,10 +29,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public void addMember(Member member){
-      /*  if(this.member != null){
-            this.member.getOrders().remove(this);
-        }*/
+    public void addMember(Member member) {
         this.member = member;
         member.getOrders().add(this);
     }
@@ -53,7 +48,7 @@ public class Order {
     protected Order(Long id, Member member, List<OrderItem> orderItems, Delivery delivery, LocalDateTime orderDate, OrderStatus status) {
         this.id = id;
         this.member = member;
-        this.orderItems = orderItems;
+        this.orderItems = orderItems == null ? new ArrayList<>() : orderItems;
         this.delivery = delivery;
         this.orderDate = orderDate;
         this.status = status;
@@ -68,9 +63,12 @@ public class Order {
         /*for (OrderItem orderItem : orderItems) {
             order.addOrderItems(orderItem);
         }*/
+
         order.addMember(member);
         order.addDelivery(delivery);
+
         Arrays.stream(orderItems).forEach(order::addOrderItems);
+
         return order;
     }
     //비즈니스 로직

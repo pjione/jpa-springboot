@@ -1,10 +1,7 @@
 package jpa.hello.domain;
 
 import jpa.hello.domain.Item.Item;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "order_item")
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
