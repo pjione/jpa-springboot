@@ -3,9 +3,7 @@ package jpa.hello.api;
 import jpa.hello.domain.Member;
 import jpa.hello.repository.MemberRepository;
 import jpa.hello.service.MemberService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,13 +32,14 @@ public class MemberApiController {
         return new CreateMemberResponse(id);
     }
 
-    @Data
+    @Getter
     @AllArgsConstructor
     static class CreateMemberResponse {
         private Long id;
     }
 
-    @Data
+    @Getter
+    @NoArgsConstructor
     static class CreateMemberRequest {
         @NotEmpty
         private String name;
