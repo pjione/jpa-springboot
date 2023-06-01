@@ -9,6 +9,8 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberForm {
     @NotBlank(message = "회원 이름은 필수 입니다.")
     private String name;

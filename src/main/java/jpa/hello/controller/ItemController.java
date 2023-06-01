@@ -11,10 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,5 +47,24 @@ public class ItemController {
         model.addAttribute("items", items);
         return "items/itemList";
     }
-
+    @GetMapping("items/{itemId}/edit")
+    public String updateItemForm(@PathVariable("itemId") Long itemId, Model model){
+        Book book = (Book) itemService.findItem(itemId).orElseThrow();
+        BookForm bookForm = new BookForm(book.getId(), book.getName(), book.getPrice(), book.getStockQuantity(), book.getAuthor(), book.getIsbn());
+        model.addAttribute("form", bookForm);
+        return "items/updateItemForm";
+    }
+    @PostMapping("/items/{itemId}/edit")
+    public String update(@PathVariable("itemId") Long itemId, @ModelAttribute("form") BookForm form){
+        Book book = Book.builder()
+                .id(form.getId())
+                .name(form.getName())
+                .price(form.getPrice())
+                .stockQuantity(form.getStockQuantity())
+                .author(form.getAuthor())
+                .isbn(form.getIsbn())
+                .build();
+        itemService.saveItem(book);
+        return "redirect:/items";
+    }
 }

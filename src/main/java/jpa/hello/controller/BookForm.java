@@ -7,6 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookForm {
     private Long id;
     private String name;
