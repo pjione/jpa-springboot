@@ -2,8 +2,10 @@ package jpa.hello.controller;
 
 
 import jpa.hello.domain.Item.Book;
+import jpa.hello.domain.Item.Item;
 import jpa.hello.service.ItemService;
 import jpa.hello.service.MemberService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,12 @@ public class ItemController {
 
         itemService.saveItem(book);
         return "redirect:/";
+    }
+    @GetMapping("items")
+    public String list(Model model){
+        List<Item> items = itemService.findItems();
+        model.addAttribute("items", items);
+        return "items/itemList";
     }
 
 }
