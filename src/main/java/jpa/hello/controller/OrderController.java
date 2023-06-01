@@ -2,6 +2,7 @@ package jpa.hello.controller;
 
 import jpa.hello.domain.Item.Item;
 import jpa.hello.domain.Member;
+import jpa.hello.repository.OrderSearch;
 import jpa.hello.service.ItemService;
 import jpa.hello.service.MemberService;
 import jpa.hello.service.OrderService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,4 +39,8 @@ public class OrderController {
         orderService.order(memberId, itemId, count);
         return "redirect:/orders";
     }
+   /* @GetMapping("/orders")
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model){
+
+    }*/
 }
