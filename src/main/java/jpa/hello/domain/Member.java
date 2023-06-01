@@ -1,9 +1,6 @@
 package jpa.hello.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -32,5 +29,8 @@ public class Member {
         this.name = name;
         this.address = address;
         this.orders = orders != null ? orders : new ArrayList<>();
+    }
+    public void updateMember(String name) {
+        this.name = name;
     }
 }

@@ -5,10 +5,7 @@ import jpa.hello.repository.MemberRepository;
 import jpa.hello.service.MemberService;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -31,6 +28,12 @@ public class MemberApiController {
         Long id = memberService.join(member);
         return new CreateMemberResponse(id);
     }
+    @PatchMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(@PathVariable Long id, @RequestBody @Validated UpdateMemberRequest request){
+        memberService.update(id, request.getName());
+        Member member = memberService.findMember(id).orElseThrow();
+        return new UpdateMemberResponse(member.getId(), member.getName());
+    }
 
     @Getter
     @AllArgsConstructor
@@ -41,6 +44,20 @@ public class MemberApiController {
     @Getter
     @NoArgsConstructor
     static class CreateMemberRequest {
+        @NotEmpty
+        private String name;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    static class UpdateMemberResponse {
+        private Long id;
+        private String name;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    static class UpdateMemberRequest {
         @NotEmpty
         private String name;
     }

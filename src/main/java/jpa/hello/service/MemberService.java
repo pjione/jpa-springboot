@@ -32,4 +32,11 @@ public class MemberService {
     public Optional<Member> findMember(Long id){
        return memberRepository.findById(id);
     }
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findById(id).orElseThrow();
+        member.updateMember(name);
+    }
+
+
 }
