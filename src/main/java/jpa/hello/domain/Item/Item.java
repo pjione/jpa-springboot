@@ -1,10 +1,7 @@
 package jpa.hello.domain.Item;
 
 import jpa.hello.exception.NotEnoughStockException;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 @Getter
+@Setter
 @NoArgsConstructor
 @ToString
 public abstract class Item {
