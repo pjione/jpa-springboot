@@ -8,6 +8,7 @@ import jpa.hello.domain.OrderItem;
 import jpa.hello.repository.ItemRepository;
 import jpa.hello.repository.MemberRepository;
 import jpa.hello.repository.OrderRepository;
+import jpa.hello.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class OrderService {
         order.cancel();
     }
     //검색
-    /*public List<Order> findOrders(OrderSeach orderSeach){
-
-    }*/
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        return orderRepository.findAllByCriteria(orderSearch);
+    }
 }
