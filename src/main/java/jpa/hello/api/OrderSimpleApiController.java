@@ -27,7 +27,19 @@ public class OrderSimpleApiController {
 
     @GetMapping("api/orders")
     public List<OrderDto> orders(){
-        List<Order> orders = orderService.findOrders((new OrderSearch()));
+        List<Order> orders = orderRepository.findAllByCriteria(new OrderSearch());
+        List<OrderDto> collect = orders.stream()
+                .map(o -> new OrderDto(o.getId(),
+                        o.getMember().getName(),
+                        o.getOrderDate(),
+                        o.getStatus(),
+                        o.getDelivery().getAddress()))
+                .collect(Collectors.toList());
+        return collect;
+    }
+    @GetMapping("api/orders2")
+    public List<OrderDto> orders2(){
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
         List<OrderDto> collect = orders.stream()
                 .map(o -> new OrderDto(o.getId(),
                         o.getMember().getName(),
