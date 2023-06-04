@@ -9,6 +9,7 @@ import jpa.hello.repository.OrderSearch;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,22 @@ public class OrderApiController {
     @GetMapping("/ordersApi")
     public Result orders(){
         List<Order> orders = orderRepository.findAllByCriteria(new OrderSearch());
+        List<OrderDtoApi> collect = orders.stream()
+                .map(o -> new OrderDtoApi(o))
+                .collect(Collectors.toList());
+        return new Result(collect);
+    }
+    @GetMapping("/ordersApi2")
+    public Result orders2(
+            @RequestParam(value = "offset", defaultValue = "0") int offset,
+            @RequestParam(value = "limit", defaultValue = "100") int limit){
+
+        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+
+        for (Order order : orders) {
+            System.out.println(" " + order.getId());
+        }
+
         List<OrderDtoApi> collect = orders.stream()
                 .map(o -> new OrderDtoApi(o))
                 .collect(Collectors.toList());
