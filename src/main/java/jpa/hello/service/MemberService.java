@@ -2,6 +2,7 @@ package jpa.hello.service;
 
 import jpa.hello.domain.Member;
 import jpa.hello.repository.MemberRepository;
+import jpa.hello.repository.MemberRepositoryOld;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -6,16 +6,14 @@ import jpa.hello.domain.Member;
 import jpa.hello.domain.Order;
 import jpa.hello.domain.OrderItem;
 import jpa.hello.repository.ItemRepository;
-import jpa.hello.repository.MemberRepository;
+import jpa.hello.repository.MemberRepositoryOld;
 import jpa.hello.repository.OrderRepository;
 import jpa.hello.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryOld memberRepository;
     private final ItemRepository itemRepository;
     /**
      * 주문

@@ -1,7 +1,6 @@
 package jpa.hello.api;
 
 import jpa.hello.domain.Member;
-import jpa.hello.repository.MemberRepository;
 import jpa.hello.service.MemberService;
 import lombok.*;
 import org.springframework.validation.annotation.Validated;
