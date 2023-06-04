@@ -1,6 +1,8 @@
 package jpa.hello.repository;
 
-import jpa.hello.domain.Member;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpa.hello.domain.*;
 import jpa.hello.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,10 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static jpa.hello.domain.QMember.member;
+import static jpa.hello.domain.QOrder.order;
+
 @Repository
 @RequiredArgsConstructor
 public class OrderRepository {
     private final EntityManager em;
+    private final JPAQueryFactory query;
+    public OrderRepository(EntityManager em) {
+        this.em = em;
+        this.query = new JPAQueryFactory(em);
+    }
 
     public void save(Order order){
         em.persist(order);
@@ -67,4 +77,29 @@ public class OrderRepository {
                 .setMaxResults(100)
                 .getResultList();
     }
+    public List<Order> findAllQ(OrderSearch orderSearch){
+
+        return query
+                .select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private static BooleanExpression nameLike(String memberName) {
+        if(!StringUtils.hasText(memberName)){
+            return null;
+        }
+        return member.name.like(memberName);
+    }
+
+    private BooleanExpression statusEq(OrderStatus orderStatus) {
+        if(orderStatus == null){
+            return null;
+        }
+        return order.status.eq(orderStatus);
+    }
+
 }
